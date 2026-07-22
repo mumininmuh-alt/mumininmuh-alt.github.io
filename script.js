@@ -32,9 +32,21 @@ function renderShop(models) {
     grid.innerHTML = '';
     filtered.forEach(model => {
       const card = template.content.cloneNode(true);
-      const viewer = card.querySelector('.mini-viewer');
-      viewer.setAttribute('src', model.preview3d);
-      viewer.addEventListener('click', () => window.location.href = `model-viewer?id=${model.id}`);
+      const viewer = card.querySelector('.vrm-preview');
+      const imgPreview = card.querySelector('.img-preview');
+
+      if (model.preview3d) {
+        viewer.style.display = 'block';
+        imgPreview.style.display = 'none';
+        viewer.setAttribute('src', model.preview3d);
+        viewer.addEventListener('click', () => window.location.href = `model-viewer?id=${model.id}`);
+      } else {
+        viewer.style.display = 'none';
+        imgPreview.style.display = 'block';
+        imgPreview.src = (model.images && model.images.length > 0) ? model.images[0] : 'images/placeholder.jpg';
+        imgPreview.addEventListener('click', () => window.location.href = `model-viewer?id=${model.id}`);
+      }
+
       card.querySelector('.model-name').textContent = model.name;
       card.querySelector('.model-desc').textContent = model.description;
       card.querySelector('.model-format-badge').textContent = model.format;
@@ -66,7 +78,19 @@ function loadViewer(models) {
   const id = params.get('id');
   const model = models.find(m => m.id === id) || models[0];
   if (!model) return;
-  document.getElementById('mainViewer').setAttribute('src', model.preview3d);
+
+  if (model.preview3d) {
+    document.getElementById('mainViewer').style.display = 'block';
+    document.getElementById('mainViewer').setAttribute('src', model.preview3d);
+    if (document.getElementById('viewerFallback')) document.getElementById('viewerFallback').style.display = 'none';
+  } else {
+    document.getElementById('mainViewer').style.display = 'none';
+    if (document.getElementById('viewerFallback')) {
+      document.getElementById('viewerFallback').style.display = 'block';
+      document.getElementById('viewerFallback').src = (model.images && model.images.length > 0) ? model.images[0] : 'images/placeholder.jpg';
+    }
+  }
+
   document.getElementById('modelName').textContent = model.name;
   document.getElementById('modelFormat').textContent = model.format;
   document.getElementById('modelDescription').textContent = model.description;
