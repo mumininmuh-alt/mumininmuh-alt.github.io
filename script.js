@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
+(function() {
+  console.log('Bentukin script loaded');
   const navLinks = document.querySelectorAll('.nav-links a');
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
@@ -11,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   loadModels();
-});
+})();
 
 async function loadModels() {
   try {
