@@ -16,7 +16,7 @@
 
 async function loadModels() {
   try {
-    const res = await fetch('/models/data.json');
+    const res = await fetch('/data/models.json');
     const models = await res.json();
     if (document.getElementById('shopGrid')) renderShop(models);
     if (document.getElementById('mainViewer')) loadViewer(models);
@@ -112,7 +112,7 @@ function loadViewer(models) {
   if (gallery && model.images && model.images.length > 0) {
     gallery.innerHTML = '<h3>Gallery</h3><div class="gallery-grid">' + model.images.map(img => `<div class="gallery-item"><img src="${img}" alt="Model photo" loading="lazy"></div>`).join('') + '</div>';
   } else if (gallery && model.thumbnail) {
-    gallery.innerHTML = '<h3>Gallery</h3><div class="gallery-grid"><div class="gallery-item"><img src=\"${model.thumbnail}\" alt="Model photo" loading="lazy"></div></div>';
+    gallery.innerHTML = '<h3>Gallery</h3><div class="gallery-grid"><div class="gallery-item"><img src="${model.thumbnail}" alt="Model photo" loading="lazy"></div></div>';
   }
 
   document.getElementById('buyGumroad').href = model.gumroad;
