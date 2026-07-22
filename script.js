@@ -27,9 +27,13 @@ async function loadModels() {
 function renderShop(models) {
   const grid = document.getElementById('shopGrid');
   const template = document.getElementById('modelCard');
+  const totalEl = document.getElementById('modelCount');
+
   function render(filter) {
     const filtered = filter === 'all' ? models : models.filter(m => m.tags.some(t => t.toLowerCase() === filter.toLowerCase()));
     grid.innerHTML = '';
+    if (totalEl) totalEl.textContent = `${filtered.length} model${filtered.length > 1 ? '' : ''}`;
+
     filtered.forEach(model => {
       const card = template.content.cloneNode(true);
       const viewer = card.querySelector('.vrm-preview');
@@ -43,7 +47,7 @@ function renderShop(models) {
       } else {
         viewer.style.display = 'none';
         imgPreview.style.display = 'block';
-        imgPreview.src = (model.images && model.images.length > 0) ? model.images[0] : 'images/placeholder.jpg';
+        imgPreview.src = model.thumbnail || (model.images && model.images.length > 0 ? model.images[0] : '');
         imgPreview.addEventListener('click', () => window.location.href = `model-viewer?id=${model.id}`);
       }
 
@@ -63,6 +67,7 @@ function renderShop(models) {
       grid.appendChild(card);
     });
   }
+
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -87,7 +92,7 @@ function loadViewer(models) {
     document.getElementById('mainViewer').style.display = 'none';
     if (document.getElementById('viewerFallback')) {
       document.getElementById('viewerFallback').style.display = 'block';
-      document.getElementById('viewerFallback').src = (model.images && model.images.length > 0) ? model.images[0] : 'images/placeholder.jpg';
+      document.getElementById('viewerFallback').src = model.thumbnail || (model.images && model.images.length > 0 ? model.images[0] : '');
     }
   }
 
@@ -96,12 +101,19 @@ function loadViewer(models) {
   document.getElementById('modelDescription').textContent = model.description;
   document.getElementById('modelPrice').textContent = model.price;
   document.title = `${model.name} - Bentukin`;
-  const featContainer = document.getElementById('modelFeatures');
-  featContainer.innerHTML = '<h3>Fitur</h3><ul>' + model.features.map(f => `<li>${f}</li>`).join('') + '</ul>';
-  const gallery = document.getElementById('modelGallery');
-  if (model.images && model.images.length > 0) {
-    gallery.innerHTML = '<h3>Galeri</h3><div class="gallery-grid">' + model.images.map(img => `<div class="gallery-item"><img src="${img}" alt="Model photo" loading="lazy"></div>`).join('') + '</div>';
+
+  if (document.getElementById('modelFeatures') && model.features) {
+    const featContainer = document.getElementById('modelFeatures');
+    featContainer.innerHTML = '<h3>Fitur</h3><ul>' + model.features.map(f => `<li>${f}</li>`).join('') + '</ul>';
   }
+
+  const gallery = document.getElementById('modelGallery');
+  if (gallery && model.images && model.images.length > 0) {
+    gallery.innerHTML = '<h3>Galeri</h3><div class="gallery-grid">' + model.images.map(img => `<div class="gallery-item"><img src="${img}" alt="Model photo" loading="lazy"></div>`).join('') + '</div>';
+  } else if (gallery && model.thumbnail) {
+    gallery.innerHTML = '<h3>Galeri</h3><div class="gallery-grid"><div class="gallery-item"><img src="${model.thumbnail}" alt="Model photo" loading="lazy"></div></div>';
+  }
+
   document.getElementById('buyGumroad').href = model.gumroad;
   document.getElementById('buyBooth').href = model.booth;
 }
