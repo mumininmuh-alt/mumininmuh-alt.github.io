@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadModels() {
   try {
-    const res = await fetch('models/data.json');
+    const res = await fetch('/models/data.json');
     const models = await res.json();
     if (document.getElementById('shopGrid')) renderShop(models);
     if (document.getElementById('mainViewer')) loadViewer(models);
@@ -43,12 +43,12 @@ function renderShop(models) {
         viewer.style.display = 'block';
         imgPreview.style.display = 'none';
         viewer.setAttribute('src', model.preview3d);
-        viewer.addEventListener('click', () => window.location.href = `model-viewer?id=${model.id}`);
+        viewer.addEventListener('click', () => window.location.href = `/model-viewer?id=${model.id}`);
       } else {
         viewer.style.display = 'none';
         imgPreview.style.display = 'block';
         imgPreview.src = model.thumbnail || (model.images && model.images.length > 0 ? model.images[0] : '');
-        imgPreview.addEventListener('click', () => window.location.href = `model-viewer?id=${model.id}`);
+        imgPreview.addEventListener('click', () => window.location.href = `/model-viewer?id=${model.id}`);
       }
 
       card.querySelector('.model-name').textContent = model.name;
