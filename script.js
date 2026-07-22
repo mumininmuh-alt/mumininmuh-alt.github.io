@@ -33,7 +33,7 @@ function renderShop(models) {
   function render(filter) {
     const filtered = filter === 'all' ? models : models.filter(m => m.tags.some(t => t.toLowerCase() === filter.toLowerCase()));
     grid.innerHTML = '';
-    if (totalEl) totalEl.textContent = `${filtered.length} model${filtered.length > 1 ? '' : ''}`;
+    if (totalEl) totalEl.textContent = `${filtered.length} model${filtered.length !== 1 ? 's' : ''}`;
 
     filtered.forEach(model => {
       const card = template.content.cloneNode(true);
