@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Preview - Bentukin</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script>
+</head>
+<body class="viewer-page">
+  <header class="header">
+    <nav class="nav">
+      <a href="shop" class="btn-back">&larr; Kembali</a>
+      <a href="index.html" class="logo">Bentukin</a>
+      <a href="https://bentukin.gumroad.com/" target="_blank" class="btn btn-primary btn-sm">Beli di Gumroad</a>
+    </nav>
+  </header>
+  <main class="viewer-main">
+    <div class="viewer-layout">
+      <div class="viewer-3d">
+        <model-viewer id="mainViewer" src="" alt="3D Model" camera-controls auto-rotate rotation-per-second="20deg" shadow-intensity="1" exposure="1" tone-mapping="neutral" ar ar-modes="webxr scene-viewer quick-look"></model-viewer>
+      </div>
+      <div class="viewer-info">
+        <h1 id="modelName">Model Name</h1>
+        <span class="model-format-badge" id="modelFormat">VRM</span>
+        <p id="modelDescription" class="viewer-description"></p>
+        <div class="viewer-features" id="modelFeatures"></div>
+        <div class="viewer-gallery" id="modelGallery"></div>
+        <div class="viewer-price-section">
+          <span class="model-price" id="modelPrice">$0</span>
+          <div class="viewer-buy-btns">
+            <a href="" target="_blank" id="buyGumroad" class="btn btn-primary">Beli di Gumroad</a>
+            <a href="" target="_blank" id="buyBooth" class="btn btn-outline">Beli di Booth</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer"><p>&copy; 2026 Bentukin. All rights reserved.</p></footer>
+  <script src="script.js"></script>
+</body>
+</html>
