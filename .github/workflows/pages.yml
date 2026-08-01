@@ -5,15 +5,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  url: ${{ steps.deployment.outputs.page_url }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -33,11 +24,9 @@ jobs:
       - name: Build
         run: npm run build || true
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ github.token }}
+          publish_dir: .
+          cname: ""
